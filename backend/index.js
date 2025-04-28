@@ -43,11 +43,41 @@ app.get('/books/:id', async (req, res) => {
 
         const book = await Book.findById(id);
 
+        return res.status(200).json(book);
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send('Problem');
+    }
+});
+
+//Update a book
+app.put('books/:id', async (req, res) => {
+    try {
+        if (
+            !req.body.title ||
+            !req.body.author ||
+            !req.body.publishYear
+        ) {
+            return res.status(400).send({
+                msg: "Send all required fields: title, author, publish year"
+            });
+        } 
+
+        const { id } = req.params;
+
+        const result = await book.findByIdAndUpdate(id);
+
+        if (!result) {
+            return res.status(404).json({ msg: "Book not found."})
+        }
+
+        return res.status(200).send({ msg: "Book updated success."})
     } catch (err) {
         console.log(err)
         return res.status(500).send('Problem')
     }
-});
+})
 
 //Post book
 app.post('/books', async (req, res) => {
@@ -61,8 +91,8 @@ app.post('/books', async (req, res) => {
         const book = await Book.create(newBook);
 
     } catch (err) {
-        console.log(err)
-        return res.status(500).send('Problem')
+        console.log(err);
+        return res.status(500).send('Problem');
     }
 });
 
