@@ -77,7 +77,26 @@ app.put('books/:id', async (req, res) => {
         console.log(err)
         return res.status(500).send('Problem')
     }
-})
+});
+
+//Delete a book
+app.delete('/books/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const result = await Book.findByIdAndDelete(id);
+
+        if (!result) {
+            return res.status(404).send({ msg: "Book not found" });
+        }
+
+        return res.status(200).send({ msg: "Delete successful" });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send('Problem in server');
+    }
+});
 
 //Post book
 app.post('/books', async (req, res) => {
