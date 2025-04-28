@@ -10,6 +10,6 @@ app.listen(PORT, () => {
 
 //Get from root directory
 app.get('/', (req, res) => {
-    console.log(req);
-    return res.status(234).send("Welcome to MERN stack");
+    console.log(req.header);
+    return res.status(200).send("Welcome to MERN stack");
 });
